@@ -1,0 +1,2 @@
+INSERT INTO customers(name, email, phoneNumber) VALUES ('Иван Иванов', 'ivan@mail.com', '+7(999)123-45-67');
+INSERT INTO customers(name, email, phoneNumber) VALUES ('Мария Петрова', 'maria@mail.com', '+7(999)765-43-21');

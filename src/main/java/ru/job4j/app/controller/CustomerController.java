@@ -13,7 +13,7 @@ import ru.job4j.app.service.PaymentService;
 import ru.job4j.app.service.StatusOrderService;
 
 @RestController
-@RequestMapping("/api/v1/customer")
+@RequestMapping("/api/v1/customer ")
 @RequiredArgsConstructor
 public class CustomerController {
     private final OrderService orderService;

@@ -15,8 +15,8 @@ public class CustomerService {
     public CustomerDto save(CustomerEntity customer) {
         CustomerEntity builder = CustomerEntity.builder()
                 .username(customer.getUsername())
-                .phoneNumber(customer.getPhoneNumber())
                 .password(customer.getPassword())
+                .phoneNumber(customer.getPhoneNumber())
                 .build();
         CustomerEntity registered = personRepository.save(builder);
         return customerMapper.toDto(registered);

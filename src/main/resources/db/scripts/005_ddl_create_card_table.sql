@@ -5,5 +5,5 @@ card_number VARCHAR not null unique,
 expiry_date TIMESTAMP,
 cvv VARCHAR not null unique,
 balance INTEGER,
-card_id int not null references customer(id)
+customer_id int references customer(id)
 );

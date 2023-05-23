@@ -26,7 +26,7 @@ public class OrderEntity {
     private int numberOrder;
 
     @Column(name = "created_date")
-    private Instant createdAt = Instant.now();
+    private Instant createdAt;
 
     @OneToMany
     @JoinColumn(name = "order_id", referencedColumnName = "id")

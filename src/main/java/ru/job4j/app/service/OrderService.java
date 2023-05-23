@@ -9,10 +9,13 @@ import ru.job4j.app.dto.StatusOrderDto;
 import ru.job4j.app.entity.CustomerEntity;
 import ru.job4j.app.entity.DishEntity;
 import ru.job4j.app.entity.OrderEntity;
+import ru.job4j.app.entity.StatusOrderEntity;
 import ru.job4j.app.mapper.OrderMapper;
+import ru.job4j.app.mapper.StatusOrderMapper;
 import ru.job4j.app.repository.CustomerRepository;
 import ru.job4j.app.repository.OrderRepository;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +26,9 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
     private final CustomerRepository customerRepository;
+    private final StatusOrderService statusOrderService;
     private final DishService dishService;
+    private final StatusOrderMapper statusOrderMapper;
 
     private int countNumberOrder = 1;
 
@@ -37,16 +42,17 @@ public class OrderService {
         OrderEntity builder = OrderEntity.builder()
                 .numberOrder(countNumberOrder++)
                 .dishs(dishEntities)
+                .createdAt(Instant.now())
                 .build();
-        orderRepository.saveAndFlush(builder);
-        log.info("Order added!");
+        orderRepository.save(builder);
+        StatusOrderEntity statusEntity = statusOrderService.getStatusByName("waiting for payment");
+        linkOrderToStatusOrder(builder.getId(), statusEntity.getId());
         OrderDto orderDto = orderMapper.toDto(builder);
-        orderDto.setStatusOrder(StatusOrderDto.builder()
-                .name("waiting for payment")
-                .description("after payment, the order will be given to the kitchen")
-                .build());
+        StatusOrderDto statusDto = statusOrderMapper.toDto(statusEntity);
+        orderDto.setStatusOrder(statusDto);
         orderDto.setToPay(totalAmount);
         linkOrderToCustomer(customerId, builder.getId());
+        log.info("Order added!");
         return orderDto;
     }
 
@@ -100,5 +106,12 @@ public class OrderService {
         OrderEntity order = getOrderEntityByIdOrElseThrow(orderId);
         customer.getOrders().add(order);
         orderRepository.save(order);
+    }
+
+    public void linkOrderToStatusOrder(Long orderId, Long statusId) {
+        OrderEntity order = getOrderEntityByIdOrElseThrow(orderId);
+        StatusOrderEntity statusOrder = statusOrderService.getStatusOrderEntityByIdOrElseThrow(statusId);
+        statusOrder.getOrders().add(order);
+        statusOrderService.save(statusOrder);
     }
 }

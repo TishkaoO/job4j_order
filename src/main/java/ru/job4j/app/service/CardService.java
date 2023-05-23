@@ -4,36 +4,38 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.job4j.app.dto.CardDto;
+import ru.job4j.app.entity.CardEntity;
+import ru.job4j.app.entity.CustomerEntity;
 import ru.job4j.app.mapper.CardMapper;
-import ru.job4j.app.model.Card;
 import ru.job4j.app.repository.CardRepository;
+import ru.job4j.app.repository.CustomerRepository;
 
-import java.util.NoSuchElementException;
+import java.time.LocalDateTime;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CardService {
     private final CardRepository cardRepository;
+    private final CustomerRepository customerRepository;
     private final CardMapper cardMapper;
 
-    public CardDto update(Card card) {
-        Card findCardAndUpdate = cardRepository.findById(card.getId())
-                .map(entity -> Card.builder()
-                        .balance(card.getBalance())
-                        .build())
-                .orElseThrow(() -> {
-                    log.info("This card with id: " + card.getId() + " is not exists!");
-                    return new NoSuchElementException("Card is not exists");
-                });
-        return cardMapper.toDto(findCardAndUpdate);
+    public CardDto createCard(Long customerId, String nameOwner, String cardNumber, LocalDateTime expiryDate, String cvv) {
+        CardEntity cardEntity = CardEntity.builder()
+                .nameOwner(nameOwner)
+                .number(cardNumber)
+                .expiryDate(expiryDate)
+                .balance(50)
+                .cvv(cvv)
+                .build();
+        cardRepository.save(cardEntity);
+        linkCardToCustomer(customerId, cardEntity.getId());
+        return cardMapper.toDto(cardEntity);
     }
 
-    public Card getCardByCardNumber(String number) {
-        Card findCard = cardRepository.findByNumber(number).orElseThrow(() -> {
-            log.info("This card with card number: " + number + " is not exists!");
-            return new NoSuchElementException("Card is not exists");
-        });
-        return findCard;
+    private void linkCardToCustomer(Long customerId, Long cardId) {
+        CustomerEntity customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new IllegalArgumentException("customer not found"));
+        CardEntity card = cardRepository.findById(cardId).orElseThrow(() -> new IllegalArgumentException("card not found"));
+        customer.getCards().add(card);
     }
 }

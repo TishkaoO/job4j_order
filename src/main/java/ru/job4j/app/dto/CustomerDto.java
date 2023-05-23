@@ -1,20 +1,15 @@
 package ru.job4j.app.dto;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
 
-import java.util.List;
-import java.util.Set;
-
+@Builder
 @Data
 public class CustomerDto {
 
-    private String name;
+    private String username;
 
-    private String email;
+    private String password;
 
     private String phoneNumber;
-
-    private List<OrderDto> orders;
-
-    private Set<CardDto> cards;
 }

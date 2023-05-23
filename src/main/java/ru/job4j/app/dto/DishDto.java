@@ -5,9 +5,6 @@ import lombok.Data;
 
 @Builder
 @Data
-public class StatusOrderDto {
-
+public class DishDto {
     private String name;
-
-    private String description;
 }

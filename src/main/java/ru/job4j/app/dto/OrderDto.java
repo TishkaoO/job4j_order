@@ -1,19 +1,25 @@
 package ru.job4j.app.dto;
 
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Builder;
+import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.util.List;
 
+@Builder
 @Data
 public class OrderDto {
 
-    private String name;
-
     private int numberOrder;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
+    private List<DishDto> dishDtos;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Your_Timezone")
+    private Instant createdDate = Instant.now();
 
     private StatusOrderDto statusOrder;
 
-    private PaymentDto payment;
+
+    private double toPay;
 }

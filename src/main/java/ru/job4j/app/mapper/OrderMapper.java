@@ -2,18 +2,18 @@ package ru.job4j.app.mapper;
 
 import org.mapstruct.Mapper;
 import ru.job4j.app.dto.OrderDto;
-import ru.job4j.app.model.Order;
+import ru.job4j.app.entity.OrderEntity;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface OrderMapper {
 
-    OrderDto toDto(Order order);
+    OrderDto toDto(OrderEntity entity);
 
-    List<OrderDto> toDto(List<Order> orders);
+    List<OrderDto> toDto(List<OrderEntity> entities);
 
-    Order toEntity(OrderDto dto);
+    OrderEntity toEntity(OrderDto dto);
 
-    List<Order> toEntity(List<OrderDto> dtos);
+    List<OrderEntity> toEntity(List<OrderDto> dtos);
 }

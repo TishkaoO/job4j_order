@@ -1,9 +1,11 @@
 package ru.job4j.app.dto;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
+@Builder
 @Data
 public class CardDto {
 
@@ -14,4 +16,6 @@ public class CardDto {
     private LocalDateTime expiryDate;
 
     private String cvv;
+
+    private double balance;
 }

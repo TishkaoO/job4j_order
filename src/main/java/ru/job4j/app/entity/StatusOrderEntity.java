@@ -1,8 +1,8 @@
-package ru.job4j.app.model;
+package ru.job4j.app.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -10,10 +10,9 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "status_orders")
-public class StatusOrder {
+@Table(name = "status_order")
+public class StatusOrderEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +22,7 @@ public class StatusOrder {
 
     private String description;
 
-    @OneToMany(mappedBy = "statusOrder",
-            cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Order> orders;
+    @OneToMany
+    @JoinColumn(name = "status_order_id", referencedColumnName = "id")
+    private List<OrderEntity> orders = new ArrayList<>();
 }

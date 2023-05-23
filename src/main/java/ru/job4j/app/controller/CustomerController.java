@@ -1,40 +1,38 @@
 package ru.job4j.app.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.job4j.app.dto.OrderDto;
-import ru.job4j.app.dto.StatusOrderDto;
-import ru.job4j.app.model.Card;
-import ru.job4j.app.model.Order;
+import ru.job4j.app.dto.CustomerDto;
+import ru.job4j.app.entity.CustomerEntity;
+import ru.job4j.app.service.CustomerService;
 import ru.job4j.app.service.OrderService;
-import ru.job4j.app.service.PaymentService;
-import ru.job4j.app.service.StatusOrderService;
 
 @RestController
-@RequestMapping("/api/v1/customer")
 @RequiredArgsConstructor
+@Slf4j
+@RequestMapping("/customers")
 public class CustomerController {
+    private final ObjectMapper objectMapper;
+    private final CustomerService customerService;
     private final OrderService orderService;
-    private final PaymentService paymentService;
 
-    private final StatusOrderService statusOrderService;
-
-    @PostMapping("/create-order")
-    public ResponseEntity<OrderDto> createOrder(@RequestBody Order order) {
-        orderService.createOrder(order);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    @PostMapping("/sign-up")
+    public ResponseEntity<CustomerDto> signUp(@RequestBody CustomerEntity customer) {
+        var entity = ResponseEntity.status(HttpStatus.CREATED)
+                .header("CustomHeader")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(customerService.save(customer));
+        return entity;
     }
 
-    @PostMapping("/pay")
-    public ResponseEntity<Boolean> payForTheOrder(@RequestBody Card card) {
-        paymentService.payForTheOrder(card);
-        return ResponseEntity.status(HttpStatus.OK).build();
-    }
 
-    @GetMapping("/check-status")
-    public StatusOrderDto checkStatusOrder(@RequestParam int number) {
-        return statusOrderService.getStatusByNumberOrder(number);
-    }
+//    @GetMapping("/check-status")
+//    public StatusOrderDto checkStatusOrder(@RequestParam int number) {
+//        return statusOrderService.getStatusByNumberOrder(number);
+//    } TODO:Доделать проверку статуса заказ
 }

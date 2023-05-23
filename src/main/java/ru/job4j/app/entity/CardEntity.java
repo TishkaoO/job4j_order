@@ -22,7 +22,7 @@ public class CardEntity {
     private String nameOwner;
 
     @Column(name = "card_number")
-    private String number;
+    private String cardNumber;
 
     @Column(name = "expiry_date")
     private LocalDateTime expiryDate;

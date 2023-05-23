@@ -7,4 +7,5 @@ import lombok.Data;
 @Data
 public class DishDto {
     private String name;
+    private double price;
 }

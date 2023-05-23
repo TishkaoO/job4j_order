@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.app.dto.AscDto;
 import ru.job4j.app.dto.OrderDto;
-import ru.job4j.app.entity.OrderEntity;
 import ru.job4j.app.service.OrderService;
 
 import java.util.List;

@@ -99,5 +99,6 @@ public class OrderService {
                 .orElseThrow(() -> new IllegalArgumentException("customer not found"));
         OrderEntity order = getOrderEntityByIdOrElseThrow(orderId);
         customer.getOrders().add(order);
+        orderRepository.save(order);
     }
 }

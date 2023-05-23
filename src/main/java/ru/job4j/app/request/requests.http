@@ -1,0 +1,21 @@
+POST http://localhost:8082/customers/sign-up
+Content-Type: application/json
+
+{
+  "username": "John",
+  "password": "password123",
+  "phoneNumber": "89996951594"
+}
+
+
+###добавить карту
+POST http://localhost:8082/cards/create/card-customer/1?name_owner=John Doe&card_number=1234567812345678&expiry_date=2023-12-31T23:59:59&cvv=123
+Content-Type: application/json
+
+###создать заказ
+POST http://localhost:8082/orders/create/customer-order/1?dish_id=1&dish_id=2&dish_id=3
+Content-Type: application/json
+
+###удалить заказ
+DELETE http://localhost:8082/orders/delete/1
+Content-Type: application/json

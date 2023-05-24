@@ -20,6 +20,6 @@ public class CardController {
                               @RequestParam("expiry_date") LocalDateTime expiryDate,
                               @RequestParam("cvv") String cvv) {
         return cardService.createCard(customerId, nameOwner, cardNumber,
-                expiryDate, cvv);
+                expiryDate, cv);
     }
 }

@@ -10,6 +10,7 @@ import ru.job4j.app.entity.CustomerEntity;
 import ru.job4j.app.entity.DishEntity;
 import ru.job4j.app.entity.OrderEntity;
 import ru.job4j.app.entity.StatusOrderEntity;
+import ru.job4j.app.exceptions.BadRequestException;
 import ru.job4j.app.mapper.OrderMapper;
 import ru.job4j.app.mapper.StatusOrderMapper;
 import ru.job4j.app.repository.CustomerRepository;
@@ -71,10 +72,10 @@ public class OrderService {
                 .filter(nextDish -> nextDish.getId().equals(dish.getId()))
                 .collect(Collectors.toList());
         if (numberOfDish < 0) {
-            throw new IllegalArgumentException("Cannot pass a negative number of burgers");
+            throw new BadRequestException("Cannot pass a negative number of burgers");
         }
         if (selectedBurgers.size() == numberOfDish) {
-            throw new IllegalArgumentException("Already have the specified number of burgers");
+            throw new BadRequestException("Already have the specified number of burgers");
         }
         if (selectedBurgers.size() < numberOfDish) {
             int additionalDish = numberOfDish - selectedBurgers.size();
@@ -96,13 +97,13 @@ public class OrderService {
 
     public OrderEntity getOrderEntityByIdOrElseThrow(Long orderId) {
         OrderEntity order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+                .orElseThrow(() -> new BadRequestException("Order not found"));
         return order;
     }
 
     public void linkOrderToCustomer(Long customerId, Long orderId) {
         CustomerEntity customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new IllegalArgumentException("customer not found"));
+                .orElseThrow(() -> new BadRequestException("customer not found"));
         OrderEntity order = getOrderEntityByIdOrElseThrow(orderId);
         customer.getOrders().add(order);
         orderRepository.save(order);
@@ -113,5 +114,15 @@ public class OrderService {
         StatusOrderEntity statusOrder = statusOrderService.getStatusOrderEntityByIdOrElseThrow(statusId);
         statusOrder.getOrders().add(order);
         statusOrderService.save(statusOrder);
+    }
+
+    public void statusChangeToSuccessfulPaymentByOrderId(Long orderId) {
+        StatusOrderEntity statusOrder = statusOrderService.getStatusByName("order has been paid");
+        List<OrderEntity> orders = statusOrder.getOrders();
+       for (OrderEntity tmp : orders)  {
+           if (tmp.getId().equals(orderId)) {
+               linkOrderToStatusOrder(tmp.getId(), statusOrder.getId());
+           }
+       }
     }
 }

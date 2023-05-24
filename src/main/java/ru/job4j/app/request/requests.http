@@ -1,4 +1,4 @@
-POST http://localhost:9090/customers/sign-up
+POST http://localhost:8080/customers/sign-up
 Content-Type: application/json
 
 {
@@ -9,13 +9,17 @@ Content-Type: application/json
 
 
 ###добавить карту
-POST http://localhost:9090/cards/create/card-customer/1?name_owner=John Doe&card_number=1234567812345678&expiry_date=2023-12-31T23:59:59&cvv=123
+POST http://localhost:8080/cards/create/card-customer/1?name_owner=John Doe&card_number=1234567812345678&expiry_date=2023-12-31T23:59:59&cvv=123
 Content-Type: application/json
 
 ###создать заказ
-POST http://localhost:9090/orders/create/customer-order/1?dish_id=1&dish_id=2&dish_id=3
+POST http://localhost:8080/orders/create/customer-order/1?dish_id=1&dish_id=2&dish_id=3
+Content-Type: application/json
+
+###оплатить заказ
+POST http://localhost:8080/payments/to-pay/1?cardId=1
 Content-Type: application/json
 
 ###удалить заказ
-DELETE http://localhost:9090/orders/delete/1
+DELETE http://localhost:8080/orders/delete/1
 Content-Type: application/json

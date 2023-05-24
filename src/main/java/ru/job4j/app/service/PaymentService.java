@@ -35,7 +35,7 @@ public class PaymentService {
         double totalAmountOfTheOrder = dishEntities.stream()
                 .mapToDouble(DishEntity::getPrice)
                 .sum();
-        if(card.getExpiryDate().isBefore(currentDateTime)) {
+        if (card.getExpiryDate().isBefore(currentDateTime)) {
             throw new PaymentException("The card has expired.");
         }
         if (totalAmountOfTheOrder <= card.getBalance()) {

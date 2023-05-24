@@ -25,8 +25,6 @@ public class OrderController {
     public OrderDto update(@PathVariable("order_id") Long orderId, @RequestParam("dish_id") Long dishId,
                            @RequestParam("number") int numberOfDish) {
         return orderService.update(orderId, dishId, numberOfDish);
-
-        //TODO: решить проблему с методом не корректно обновляет а точнее перебивает стоимость на 0
     }
 
     @DeleteMapping("delete/{id}")

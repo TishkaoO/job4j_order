@@ -29,10 +29,4 @@ public class CustomerController {
                 .body(customerService.save(customer));
         return entity;
     }
-
-
-//    @GetMapping("/check-status")
-//    public StatusOrderDto checkStatusOrder(@RequestParam int number) {
-//        return statusOrderService.getStatusByNumberOrder(number);
-//    } TODO:Доделать проверку статуса заказ
 }

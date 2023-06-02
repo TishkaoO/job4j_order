@@ -9,7 +9,6 @@ import ru.job4j.app.entity.OrderEntity;
 import ru.job4j.app.entity.StatusOrderEntity;
 import ru.job4j.app.exceptions.PaymentException;
 import ru.job4j.app.mapper.OrderMapper;
-import ru.job4j.app.repository.CustomerRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,7 +20,6 @@ public class PaymentService {
     private final OrderService orderService;
     private final CardService cardService;
     private final OrderMapper orderMapper;
-    private final CustomerRepository customerRepository;
     private final StatusOrderService statusOrderService;
 
     public AscDto payToTheOrder(Long orderId, Long cardId) {

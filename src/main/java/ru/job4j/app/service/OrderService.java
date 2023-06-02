@@ -2,6 +2,7 @@ package ru.job4j.app.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import ru.job4j.app.dto.AscDto;
 import ru.job4j.app.dto.OrderDto;
@@ -30,6 +31,7 @@ public class OrderService {
     private final StatusOrderService statusOrderService;
     private final DishService dishService;
     private final StatusOrderMapper statusOrderMapper;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
     private int countNumberOrder = 1;
 
@@ -53,6 +55,7 @@ public class OrderService {
         orderDto.setStatusOrder(statusDto);
         orderDto.setToPay(totalAmount);
         linkOrderToCustomer(customerId, builder.getId());
+        kafkaTemplate.send("job4j_orders", orderDto);
         log.info("Order added!");
         return orderDto;
     }
